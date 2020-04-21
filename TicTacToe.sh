@@ -54,3 +54,17 @@ function symbolChoice() {
 	esac
 }
 symbolChoice
+
+function tossCoin() {
+	echo -e "\npress Enter to Toss a Coin :"
+	read ch
+	coin=$(( RANDOM % 2 ))
+	if (( $coin == 0 ))
+	then
+		echo "you are Playing First..."
+	else
+		echo "computer is Playing First..."
+	fi
+}
+
+tossCoin
