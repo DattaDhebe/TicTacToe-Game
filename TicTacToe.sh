@@ -34,14 +34,14 @@ function symbolChoice() {
 
 	case $choice in
 		1)
-			yourSymbol="X";
-			echo "your choice is : $yourSymbol.";
+			playerSymbol="X";
+			echo "your choice is : $playerSymbol.";
 			compSymbol="O";
-			echo "computer choice is : $compSymbol."
+			echo "computer choice is : $playerSymbol."
 			;;
 		2)
-			yourSymbol="O";	
-			echo "your choice is : $yourSymbol.";
+			playerSymbol="O";	
+			echo "your choice is : $playerSymbol.";
 			compSymbol="X";
 			echo "computer choice is : $compSymbol."
 			;;
@@ -55,6 +55,22 @@ function symbolChoice() {
 }
 symbolChoice
 
+function playerInput() {
+	read -p "Enter Row : " row
+	read -p "Enter Column : " column
+	
+	initBoard $row $column $playerSymbol
+	printBoard
+}
+
+function computerInput() {
+	row=$((RANDOM % 3))
+	colummn=$((RANDOM %3))
+	
+	initBoard $row $column $compSymbol
+	printBoard
+}
+
 function tossCoin() {
 	echo -e "\npress Enter to Toss a Coin :"
 	read ch
@@ -62,8 +78,10 @@ function tossCoin() {
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
+		playerInput $playerSymbol
 	else
 		echo "computer is Playing First..."
+		computerInput $compSymbol
 	fi
 }
 
