@@ -27,20 +27,30 @@ function printBoard() {
 
 initBoard
 printBoard
-x=1;
-o=2;
 
-printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n"
-read -p "your choice : " choice
+function symbolChoice() {
+	printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n3. exit\n"
+	read -p "your choice : " choice
 
-case $choice in
-	$x)
-		echo "your choice is $x."
-		;;
-	$o)	
-		echo "your choice is $o."
-		;;
-	*)
-		echo "wrong Choice, please select from above option."
-		;;
-esac
+	case $choice in
+		1)
+			yourSymbol="X";
+			echo "your choice is : $yourSymbol.";
+			compSymbol="O";
+			echo "computer choice is : $compSymbol."
+			;;
+		2)
+			yourSymbol="O";	
+			echo "your choice is : $yourSymbol.";
+			compSymbol="X";
+			echo "computer choice is : $compSymbol."
+			;;
+		3)
+			echo "bye bye..!!"
+			;;
+		*)
+			echo "wrong Choice, please select from above option."
+			;;
+	esac
+}
+symbolChoice
