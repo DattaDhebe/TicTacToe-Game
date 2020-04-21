@@ -15,17 +15,7 @@ function initBoard() {
 	do
 		for (( column=1; column<=noOfRows; column++))
 		do
-			if [[ $row -eq $rowPosition ]] && [[ $column -eq $columnPosition ]]
-			then
-				if [[ $playerSymbol ]]
-				then
-					gameBoard[$row, $column]=$playerSymbol
-				else
-					gameBoard[$row, $column]=$compSymbol
-				fi
-			else
-				gameBoard[$row, $column]=$placeHolser
-			fi
+			gameBoard[$row, $column]=$placeHolser
 		done
 	done
 }
@@ -37,7 +27,7 @@ function printBoard() {
 	do
 		for ((column=1; column<=noOfColumns; column++))
 		do
-			printf "| ${gameBoard[$rowPosition, $columnPosition]} "
+			printf "| ${gameBoard[$row, $column]} "
 		done
 		printf "|\n-------------\n"
 	done
@@ -55,7 +45,7 @@ function symbolChoice() {
 			playerSymbol="X";
 			echo "your choice is : $playerSymbol.";
 			compSymbol="O";
-			echo "computer choice is : $compSymbol."
+			echo "computer choice is : $playerSymbol."
 			;;
 		2)
 			playerSymbol="O";	
@@ -73,16 +63,6 @@ function symbolChoice() {
 }
 symbolChoice
 
-function filingBoard() {
-	temp="X"
-	if [[ $playerSymbol -eq $temp ]]
-	then
-		initBoard $rowPosition $columnPosition $playerSymbol
-	else
-		initBoard $rowPosition $columnPosition $compSymbol
-	fi
-	printBoard
-}
 
 function playerInput() {
 	
@@ -106,10 +86,10 @@ function tossCoin() {
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
-		playerInput
+		playerInput $playerSymbol
 	else
 		echo "computer is Playing First..."
-		computerInput
+		computerInput $compSymbol
 	fi
 }
 
