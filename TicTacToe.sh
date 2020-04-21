@@ -1,10 +1,12 @@
-#!/bin/bash -x
+#/bin/bash -x
 
 noOfRows=3;
 noOfColumns=3;
 placeHolder="-";
 playerSymbol=0;
 compSymbol=0;
+rowPosition=0;
+columnPosition=0;
 
 declare -A gameBoard
 
@@ -13,9 +15,9 @@ function initBoard() {
 	do
 		for (( column=1; column<=noOfRows; column++))
 		do
-			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			if [[ $row -eq $rowPosition ]] && [[ $column -eq $columnPosition ]]
 			then
-				if (($playerSymbol))
+				if [[ $playerSymbol ]]
 				then
 					gameBoard[$row, $column]=$playerSymbol
 				else
@@ -35,7 +37,7 @@ function printBoard() {
 	do
 		for ((column=1; column<=noOfColumns; column++))
 		do
-			printf "| ${gameBoard[$row, $column]} "
+			printf "| ${gameBoard[$rowPosition, $columnPosition]} "
 		done
 		printf "|\n-------------\n"
 	done
