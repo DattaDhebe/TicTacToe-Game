@@ -25,7 +25,22 @@ function printBoard() {
 	done
 }
 
-			
-
 initBoard
 printBoard
+x=1;
+o=2;
+
+printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n"
+read -p "your choice : " choice
+
+case $choice in
+	$x)
+		echo "your choice is $x."
+		;;
+	$o)	
+		echo "your choice is $o."
+		;;
+	*)
+		echo "wrong Choice, please select from above option."
+		;;
+esac
