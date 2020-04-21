@@ -6,16 +6,27 @@ placeHolder="-";
 playerSymbol=0;
 compSymbol=0;
 rowPosition=0;
-columnPosition=0;
+columnPostion=0;
 
 declare -A gameBoard
 
 function initBoard() {
-	for (( row=1; row<=noOfRows; row++ ))
+	for (( row=0; row<noOfRows; row++ ))
 	do
-		for (( column=1; column<=noOfRows; column++))
+		for (( column=0; column<noOfRows; column++))
 		do
-			gameBoard[$row, $column]=$placeHolder
+			if (( $row==$rowPosition && $column==$columnPosition ))
+			then
+				if (($playerSymbol))
+				then
+					holdPosition=$playerSymbol;
+				else
+					holdPosition=$compSymbol;
+				fi
+				gameBoard[$rowPosition, $columnPosition]=$holdPosition;
+			else
+				gameBoard[$row, $column]=$placeHolder;
+			fi
 		done
 	done
 }
@@ -23,9 +34,9 @@ function initBoard() {
 function printBoard() {
 	printf "\n~ Game Board ~"
 	printf "\n-------------\n"
-	for (( row=1; row<=noOfRows; row++))
+	for (( row=0; row<noOfRows; row++))
 	do
-		for ((column=1; column<=noOfColumns; column++))
+		for ((column=0; column<noOfColumns; column++))
 		do
 			printf "| ${gameBoard[$row, $column]} "
 		done
@@ -63,26 +74,30 @@ function symbolChoice() {
 }
 symbolChoice
 
+#declare varible for  storing position
 
 function playerInput() {
 	
 		read -p "Enter Row : " rowPosition
 		read -p "Enter Column : " columnPosition
 		
-		filingBoard $rowPosition $columnPosition $playerSymbol
-				
+		initBoard $rowPosition $columnPosition $playerSymbol
+		printBoard				
 }
 
 function computerInput() {
-	row=$((RANDOM % 3))
-	column=$((RANDOM % 3))
-	filingBoard $rowPosition $columnPosition $compSymbol
+	rowPosition=$((RANDOM % 3))
+	columnPosition=$((RANDOM % 3))
+	initBoard $rowPosition $columnPosition $compSymbol
+	printBoard
 }
 
 function tossCoin() {
 	echo -e "\npress Enter to Toss a Coin :"
 	read ch
 	coin=$(( RANDOM % 2 ))
+	
+	#flip coin
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
