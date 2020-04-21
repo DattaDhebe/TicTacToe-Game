@@ -15,7 +15,7 @@ function initBoard() {
 	do
 		for (( column=1; column<=noOfRows; column++))
 		do
-			gameBoard[$row, $column]=$placeHolser
+			gameBoard[$row, $column]=$placeHolder
 		done
 	done
 }
