@@ -15,13 +15,15 @@ function initBoard() {
 	done
 }
 function printBoard() {
+	printf "\n~ Game Board ~"
+	printf "\n-------------\n"
 	for (( row=1; row<=noOfRows; row++))
 	do
 		for ((column=1; column<=noOfColumns; column++))
 		do
 			printf "| ${gameBoard[$row, $column]} "
 		done
-		printf "|\n"
+		printf "|\n-------------\n"
 	done
 }
 
@@ -53,7 +55,7 @@ function symbolChoice() {
 			;;
 	esac
 }
-symbolChoice
+#symbolChoice
 
 function tossCoin() {
 	echo -e "\npress Enter to Toss a Coin :"
@@ -67,4 +69,4 @@ function tossCoin() {
 	fi
 }
 
-tossCoin
+#tossCoin
