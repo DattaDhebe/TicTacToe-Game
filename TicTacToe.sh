@@ -4,7 +4,7 @@ noOfRows=3;
 noOfColumns=3;
 initSymbol="-"
 
-initBoard() {
+function initBoard() {
 	for (( row=1; row<=noOfRows; row++ ))
 	do
 		for (( column=0; column<=noOfRows; column++))
@@ -13,6 +13,8 @@ initBoard() {
 		done
 	done
 }
+
+
 
 			
 
