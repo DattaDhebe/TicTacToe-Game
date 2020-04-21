@@ -1,8 +1,11 @@
-#/bin/bash -x
+#!/bin/bash -x
 
 noOfRows=3;
 noOfColumns=3;
 placeHolder="-";
+playerSymbol=0;
+compSymbol=0;
+
 declare -A gameBoard
 
 function initBoard() {
@@ -10,10 +13,21 @@ function initBoard() {
 	do
 		for (( column=1; column<=noOfRows; column++))
 		do
-			gameBoard[$row, $column]=$placeHolder
+			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			then
+				if (($playerSymbol))
+				then
+					gameBoard[$row, $column]=$playerSymbol
+				else
+					gameBoard[$row, $column]=$compSymbol
+				fi
+			else
+				gameBoard[$row, $column]=$placeHolser
+			fi
 		done
 	done
 }
+
 function printBoard() {
 	printf "\n~ Game Board ~"
 	printf "\n-------------\n"
@@ -31,19 +45,19 @@ initBoard
 printBoard
 
 function symbolChoice() {
-	printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n3. exit\n"
+	printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n"
 	read -p "your choice : " choice
 
 	case $choice in
 		1)
-			yourSymbol="X";
-			echo "your choice is : $yourSymbol.";
+			playerSymbol="X";
+			echo "your choice is : $playerSymbol.";
 			compSymbol="O";
 			echo "computer choice is : $compSymbol."
 			;;
 		2)
-			yourSymbol="O";	
-			echo "your choice is : $yourSymbol.";
+			playerSymbol="O";	
+			echo "your choice is : $playerSymbol.";
 			compSymbol="X";
 			echo "computer choice is : $compSymbol."
 			;;
@@ -55,7 +69,33 @@ function symbolChoice() {
 			;;
 	esac
 }
-#symbolChoice
+symbolChoice
+
+function filingBoard() {
+	temp="X"
+	if [[ $playerSymbol -eq $temp ]]
+	then
+		initBoard $rowPosition $columnPosition $playerSymbol
+	else
+		initBoard $rowPosition $columnPosition $compSymbol
+	fi
+	printBoard
+}
+
+function playerInput() {
+	
+		read -p "Enter Row : " rowPosition
+		read -p "Enter Column : " columnPosition
+		
+		filingBoard $rowPosition $columnPosition $playerSymbol
+				
+}
+
+function computerInput() {
+	row=$((RANDOM % 3))
+	column=$((RANDOM % 3))
+	filingBoard $rowPosition $columnPosition $compSymbol
+}
 
 function tossCoin() {
 	echo -e "\npress Enter to Toss a Coin :"
@@ -64,9 +104,13 @@ function tossCoin() {
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
+		playerInput
 	else
 		echo "computer is Playing First..."
+		computerInput
 	fi
 }
 
-#tossCoin
+tossCoin
+
+
