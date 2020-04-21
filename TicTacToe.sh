@@ -55,6 +55,7 @@ function symbolChoice() {
 			;;
 		3)
 			echo "bye bye..!!"
+			break;
 			;;
 		*)
 			echo "wrong Choice, please select from above option."
