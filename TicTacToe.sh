@@ -1,3 +1,4 @@
+
 #/bin/bash -x
 
 ROWS=3;
@@ -15,7 +16,7 @@ function initBoard() {
 	do
 		for (( column=0; column<COLUMNS; column++ ))
 		do
-			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			if [[ $row -eq $Rows && $column -eq $Column ]]
 			then
 				if (($playerSymbol))
 				then
@@ -103,11 +104,23 @@ function playGame() {
 		if [[ occupie == 0 ]]
 		then
 			filingBoard $row $column X
+			while [ true ]
+			do
+				Rows=$(( RANDOM % 3 ))
+				Columns=$(( RANDOM % 3 ))
+		
+				occupiedPositionCheck $Rows $Columns
+				if [[ occupie == 0]]
+				then
+					filingBoard $Rows $Columns O
+				fi
+			done
+				
 		else
 			echo "position is already occupied. try again"
-		fi
-		
+	   fi	
 		printBoard
+	done
 }
 	
 
