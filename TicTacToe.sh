@@ -1,21 +1,21 @@
 #/bin/bash -x
 
-noOfRows=3;
-noOfColumns=3;
+ROWS=3;
+COLUMNS=3;
 placeHolder="-";
-playerSymbol=0;
-compSymbol=0;
+playerSymbol="X";
+compSymbol="O";
 rowPosition=0;
 columnPostion=0;
 
 declare -A gameBoard
 
 function initBoard() {
-	for (( row=0; row<noOfRows; row++ ))
+	for (( row=0; row<ROWS; row++ ))
 	do
-		for (( column=0; column<noOfRows; column++))
+		for (( column=0; column<COLUMNS; column++ ))
 		do
-			if (( $row==$rowPosition && $column==$columnPosition ))
+			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
 			then
 				if (($playerSymbol))
 				then
@@ -32,11 +32,11 @@ function initBoard() {
 }
 
 function printBoard() {
-	printf "\n~ Game Board ~"
+	printf "\n~ Tic Tac Toe ~"
 	printf "\n-------------\n"
-	for (( row=0; row<noOfRows; row++))
+	for (( row=0; row<ROWS; row++ ))
 	do
-		for ((column=0; column<noOfColumns; column++))
+		for ((column=0; column<COLUMNS; column++ ))
 		do
 			printf "| ${gameBoard[$row, $column]} "
 		done
@@ -47,34 +47,36 @@ function printBoard() {
 initBoard
 printBoard
 
-function symbolChoice() {
-	printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n"
-	read -p "your choice : " choice
+function fillingBoard() {
+	row=$1
+	column=$2
+	symbol=$3
 
-	case $choice in
-		1)
-			playerSymbol="X";
-			echo "your choice is : $playerSymbol.";
-			compSymbol="O";
-			echo "computer choice is : $playerSymbol."
-			;;
-		2)
-			playerSymbol="O";	
-			echo "your choice is : $playerSymbol.";
-			compSymbol="X";
-			echo "computer choice is : $compSymbol."
-			;;
-		3)
-			echo "bye bye..!!"
-			;;
-		*)
-			echo "wrong Choice, please select from above option."
-			;;
-	esac
+	gameBoard[$row, $column]=$symbol;
 }
-symbolChoice
 
-#declare varible for  storing position
+filingBoard
+function playGame() {
+	
+	echo "Your Symbol is : $playerSymbol"
+	echo "computer Symbol is : $compSymbol"
+		
+	coin=$(( "tossCoin" ))
+		
+	if [ $coin -eq 0 ]
+	then
+		playerInput $playerSymbol
+	else
+		computerInput $compSymbol		
+	fi		
+		printBoard
+	
+		
+}
+playGame
+
+
+#declare variable for  storing position
 
 function playerInput() {
 	
@@ -82,18 +84,23 @@ function playerInput() {
 		read -p "Enter Column : " columnPosition
 		
 		initBoard $rowPosition $columnPosition $playerSymbol
-		printBoard				
+
+		computerInput 
+		
 }
 
 function computerInput() {
 	rowPosition=$((RANDOM % 3))
 	columnPosition=$((RANDOM % 3))
+	
 	initBoard $rowPosition $columnPosition $compSymbol
-	printBoard
+	
+	playerInput
+	
 }
 
 function tossCoin() {
-	echo -e "\npress Enter to Toss a Coin :"
+	echo -e "\n press Enter to Toss a Coin :"
 	read ch
 	coin=$(( RANDOM % 2 ))
 	
@@ -101,13 +108,13 @@ function tossCoin() {
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
-		playerInput $playerSymbol
 	else
 		echo "computer is Playing First..."
-		computerInput $compSymbol
 	fi
+	return $coin
 }
 
 tossCoin
+
 
 
