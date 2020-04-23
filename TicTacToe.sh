@@ -47,7 +47,10 @@ function printBoard() {
 initBoard
 printBoard
 
-function fillingBoard() {
+echo "your Symbol is : $playerSymbol"
+echo "computer symbol is : $compSymbol"
+
+function filingBoard() {
 	row=$0
 	column=$1
 	symbol=$2
@@ -55,28 +58,7 @@ function fillingBoard() {
 	gameBoard[$row, $column]=$symbol;
 }
 
-filingBoard
-function playGame() {
-	
-	echo "Your Symbol is : $playerSymbol"
-	echo "computer Symbol is : $compSymbol"
-		
-	coin=$(( "tossCoin" ))
-		
-	if [ $coin -eq 0 ]
-	then
-		playerInput $playerSymbol
-	else
-		computerInput $compSymbol		
-	fi		
-		printBoard
-	
-		
-}
-playGame
-
-
-#declare variable for  storing position
+filingBoard 0 0 X
 
 function playerInput() {
 	
@@ -85,7 +67,7 @@ function playerInput() {
 		
 		initBoard $rowPosition $columnPosition $playerSymbol
 
-		computerInput 
+		 
 		
 }
 
@@ -95,9 +77,7 @@ function computerInput() {
 	
 	initBoard $rowPosition $columnPosition $compSymbol
 	
-	playerInp
-ut
-	
+		
 }
 
 function tossCoin() {
@@ -109,6 +89,7 @@ function tossCoin() {
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
+		
 	else
 		echo "computer is Playing First..."
 	fi
