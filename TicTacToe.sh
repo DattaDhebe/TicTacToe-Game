@@ -50,7 +50,6 @@ printBoard
 echo "your Symbol is : $playerSymbol"
 echo "computer symbol is : $compSymbol"
 
-
 function filingBoard() {
 	row=$0
 	column=$1
