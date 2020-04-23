@@ -15,18 +15,18 @@ function initBoard() {
 	do
 		for (( column=0; column<COLUMNS; column++ ))
 		do
-			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
-			then
-				if (($playerSymbol))
-				then
-					holdPosition=$playerSymbol;
-				else
-					holdPosition=$compSymbol;
-				fi
-				gameBoard[$rowPosition, $columnPosition]=$holdPosition;
-			else
-				gameBoard[$row, $column]=$placeHolder;
-			fi
+			#if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			#then
+			#	if (($playerSymbol))
+			#	then
+			#		holdPosition=$playerSymbol;
+			#	else
+			#		holdPosition=$compSymbol;
+			#	fi
+			#	gameBoard[$rowPosition, $columnPosition]=$holdPosition;
+			#else
+			gameBoard[$row, $column]=$placeHolder;
+			#fi
 		done
 	done
 }
@@ -48,9 +48,9 @@ initBoard
 printBoard
 
 function fillingBoard() {
-	row=$1
-	column=$2
-	symbol=$3
+	row=$0
+	column=$1
+	symbol=$2
 
 	gameBoard[$row, $column]=$symbol;
 }
@@ -95,7 +95,8 @@ function computerInput() {
 	
 	initBoard $rowPosition $columnPosition $compSymbol
 	
-	playerInput
+	playerInp
+ut
 	
 }
 
