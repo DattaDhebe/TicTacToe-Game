@@ -1,31 +1,42 @@
 #/bin/bash -x
 
-noOfRows=3;
-noOfColumns=3;
+ROWS=3;
+COLUMNS=3;
 placeHolder="-";
-playerSymbol=0;
-compSymbol=0;
+playerSymbol="X";
+compSymbol="O";
 rowPosition=0;
-columnPosition=0;
+columnPostion=0;
 
 declare -A gameBoard
 
 function initBoard() {
-	for (( row=1; row<=noOfRows; row++ ))
+	for (( row=0; row<ROWS; row++ ))
 	do
-		for (( column=1; column<=noOfRows; column++))
+		for (( column=0; column<COLUMNS; column++ ))
 		do
-			gameBoard[$row, $column]=$placeHolder
+			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			then
+				if (($playerSymbol))
+				then
+					holdPosition=$playerSymbol;
+				else
+					holdPosition=$compSymbol;
+			fi
+				gameBoard[$row, $column]=$holdPosition;
+			else
+			gameBoard[$row, $column]=$placeHolder;
+			fi
 		done
 	done
 }
 
 function printBoard() {
-	printf "\n~ Game Board ~"
+	printf "\n~ Tic Tac Toe ~"
 	printf "\n-------------\n"
-	for (( row=1; row<=noOfRows; row++))
+	for (( row=0; row<ROWS; row++ ))
 	do
-		for ((column=1; column<=noOfColumns; column++))
+		for ((column=0; column<COLUMNS; column++ ))
 		do
 			printf "| ${gameBoard[$row, $column]} "
 		done
@@ -36,64 +47,69 @@ function printBoard() {
 initBoard
 printBoard
 
-function symbolChoice() {
-	printf "\nPlease, Choose Symbol to  play  :\n1. X\n2. O\n"
-	read -p "your choice : " choice
+echo "your Symbol is : $playerSymbol"
+echo "computer symbol is : $compSymbol"
 
-	case $choice in
-		1)
-			playerSymbol="X";
-			echo "your choice is : $playerSymbol.";
-			compSymbol="O";
-			echo "computer choice is : $playerSymbol."
-			;;
-		2)
-			playerSymbol="O";	
-			echo "your choice is : $playerSymbol.";
-			compSymbol="X";
-			echo "computer choice is : $compSymbol."
-			;;
-		3)
-			echo "bye bye..!!"
-			break;
-			;;
-		*)
-			echo "wrong Choice, please select from above option."
-			;;
-	esac
+
+function filingBoard() {
+	row=$0
+	column=$1
+	symbol=$2
+
+	gameBoard[$row, $column]=$symbol;
 }
-symbolChoice
 
+filingBoard 0 0 X
 
-function playerInput() {
+function	occupiedPositionCheck() {
+	row=$0;
+	column=$1;
+
+	if [[ ${gameBoard[$row, $column]} == $placeHolder ]]
+	then
+		echo "position is not occupied"
+		return 0
+	fi
 	
-		read -p "Enter Row : " rowPosition
-		read -p "Enter Column : " columnPosition
-		
-		filingBoard $rowPosition $columnPosition $playerSymbol
-				
-}
-
-function computerInput() {
-	row=$((RANDOM % 3))
-	column=$((RANDOM % 3))
-	filingBoard $rowPosition $columnPosition $compSymbol
+	return 1
+	
 }
 
 function tossCoin() {
-	echo -e "\npress Enter to Toss a Coin :"
+	echo -e "\n press Enter to Toss a Coin :"
 	read ch
 	coin=$(( RANDOM % 2 ))
+	
+	#flip coin
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
-		playerInput $playerSymbol
+		
 	else
 		echo "computer is Playing First..."
-		computerInput $compSymbol
 	fi
+	return $coin
 }
 
 tossCoin
+
+function playGame() {
+	while [ true ]
+	do
+		read -p "Enter Raw : " row
+		read -p "Enter Column : " column
+
+		occupie=$(( "occupiedPositionCheck $row $column" ))
+
+		if [[ occupie == 0 ]]
+		then
+			filingBoard $row $column X
+		else
+			echo "position is already occupied. try again"
+		fi
+		
+		printBoard
+}
+	
 
 
