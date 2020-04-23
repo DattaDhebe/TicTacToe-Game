@@ -15,18 +15,18 @@ function initBoard() {
 	do
 		for (( column=0; column<COLUMNS; column++ ))
 		do
-			#if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
-			#then
-			#	if (($playerSymbol))
-			#	then
-			#		holdPosition=$playerSymbol;
-			#	else
-			#		holdPosition=$compSymbol;
-			#	fi
-			#	gameBoard[$rowPosition, $columnPosition]=$holdPosition;
-			#else
+			if [[ $row -eq $rowPosition && $column -eq $columnPosition ]]
+			then
+				if (($playerSymbol))
+				then
+					holdPosition=$playerSymbol;
+				else
+					holdPosition=$compSymbol;
+			fi
+				gameBoard[$row, $column]=$holdPosition;
+			else
 			gameBoard[$row, $column]=$placeHolder;
-			#fi
+			fi
 		done
 	done
 }
@@ -60,24 +60,18 @@ function filingBoard() {
 
 filingBoard 0 0 X
 
-function playerInput() {
-	
-		read -p "Enter Row : " rowPosition
-		read -p "Enter Column : " columnPosition
-		
-		initBoard $rowPosition $columnPosition $playerSymbol
+function	occupiedPositionCheck() {
+	row=$0;
+	column=$1;
 
-		 
-		
-}
-
-function computerInput() {
-	rowPosition=$((RANDOM % 3))
-	columnPosition=$((RANDOM % 3))
+	if [[ ${gameBoard[$row, $column]} == $placeHolder ]]
+	then
+		echo "position is not occupied"
+		return 0
+	fi
 	
-	initBoard $rowPosition $columnPosition $compSymbol
+	return 1
 	
-		
 }
 
 function tossCoin() {
@@ -98,5 +92,23 @@ function tossCoin() {
 
 tossCoin
 
+function playGame() {
+	while [ true ]
+	do
+		read -p "Enter Raw : " row
+		read -p "Enter Column : " column
+
+		occupie=$(( "occupiedPositionCheck $row $column" ))
+
+		if [[ occupie == 0 ]]
+		then
+			filingBoard $row $column X
+		else
+			echo "position is already occupied. try again"
+		fi
+		
+		printBoard
+}
+	
 
 
