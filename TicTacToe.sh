@@ -18,15 +18,10 @@ function initBoard() {
 		do
 			if [[ $row -eq $Rows && $column -eq $Column ]]
 			then
-				if (($playerSymbol))
-				then
-					holdPosition=$playerSymbol;
-				else
-					holdPosition=$compSymbol;
-			fi
+				holdPosition=$symbol;
 				gameBoard[$row, $column]=$holdPosition;
 			else
-			gameBoard[$row, $column]=$placeHolder;
+				gameBoard[$row, $column]=$placeHolder;
 			fi
 		done
 	done
@@ -52,9 +47,9 @@ echo "your Symbol is : $playerSymbol"
 echo "computer symbol is : $compSymbol"
 
 function filingBoard() {
-	row=$0
-	column=$1
-	symbol=$2
+	row=$1
+	column=$2
+	symbol=$3
 
 	gameBoard[$row, $column]=$symbol;
 }
@@ -62,29 +57,27 @@ function filingBoard() {
 filingBoard 0 0 X
 
 function	occupiedPositionCheck() {
-	row=$0;
-	column=$1;
+	row=$1;
+	column=$2;
 
 	if [[ ${gameBoard[$row, $column]} == $placeHolder ]]
 	then
 		echo "position is not occupied"
 		return 0
+	else
+		return 1
 	fi
-	
-	return 1
-	
 }
 
 function tossCoin() {
 	echo -e "\n press Enter to Toss a Coin :"
 	read ch
 	coin=$(( RANDOM % 2 ))
-	
+
 	#flip coin
 	if (( $coin == 0 ))
 	then
 		echo "you are Playing First..."
-		
 	else
 		echo "computer is Playing First..."
 	fi
@@ -103,25 +96,23 @@ function playGame() {
 
 		if [[ occupie == 0 ]]
 		then
-			filingBoard $row $column X
+			filingBoard $row $column $playerSymbol
 			while [ true ]
 			do
-				Rows=$(( RANDOM % 3 ))
-				Columns=$(( RANDOM % 3 ))
-		
-				occupiedPositionCheck $Rows $Columns
-				if [[ occupie == 0]]
+				computer_rows=$(( RANDOM % 3 ))
+				computer_Columns=$(( RANDOM % 3 ))
+				occupiedPositionCheck $computer_rows $computer_columns
+				if [[ occupie == 0 ]]
 				then
-					filingBoard $Rows $Columns O
+					filingBoard $Rows $Columns $compSymbol
 				fi
 			done
-				
+
 		else
 			echo "position is already occupied. try again"
-	   fi	
+	   fi
 		printBoard
 	done
 }
-	
 
 
