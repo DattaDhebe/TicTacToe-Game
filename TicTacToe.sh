@@ -16,9 +16,9 @@ function initBoard() {
 	do
 		for (( column=0; column<COLUMNS; column++ ))
 		do
-			if [[ $row -eq $Rows && $column -eq $Column ]]
+			if [[ $row -eq $fill_row && $column -eq $fill_column ]]
 			then
-				holdPosition=$symbol;
+				holdPosition=$fill_symbol;
 				gameBoard[$row, $column]=$holdPosition;
 			else
 				gameBoard[$row, $column]=$placeHolder;
@@ -47,14 +47,14 @@ echo "your Symbol is : $playerSymbol"
 echo "computer symbol is : $compSymbol"
 
 function filingBoard() {
-	row=$1
-	column=$2
-	symbol=$3
+	fill_row=$1
+	fill_column=$2
+	fill_symbol=$3
 
-	gameBoard[$row, $column]=$symbol;
+	gameBoard[$fill_row, $fill_column]=$fill_symbol;
 }
 
-filingBoard 0 0 X
+#filingBoard 0 0 X
 
 function	occupiedPositionCheck() {
 	row=$1;
@@ -69,6 +69,38 @@ function	occupiedPositionCheck() {
 	fi
 }
 
+
+function playGame() {
+   while [ true ]
+   do
+      read -p "Enter Raw : " row
+      read -p "Enter Column : " column
+
+      occupie=$(( "occupiedPositionCheck $row $column" ))
+
+      if [[ occupie == 0 ]]
+      then
+         filingBoard $row $column $playerSymbol
+         while [ true ]
+         do
+            computer_rows=$(( RANDOM % 3 ))
+            computer_Columns=$(( RANDOM % 3 ))
+            occupiedPositionCheck $computer_rows $computer_columns
+            if [[ occupie == 0 ]]
+            then
+               filingBoard $computer_rows $computer_columns $compSymbol
+            fi
+         done
+
+      else
+         echo "position is already occupied. try again"
+      fi
+      printBoard
+   done
+}
+
+
+
 function tossCoin() {
 	echo -e "\n press Enter to Toss a Coin :"
 	read ch
@@ -81,38 +113,9 @@ function tossCoin() {
 	else
 		echo "computer is Playing First..."
 	fi
-	return $coin
+	
+	playGame $coin
 }
 
 tossCoin
-
-function playGame() {
-	while [ true ]
-	do
-		read -p "Enter Raw : " row
-		read -p "Enter Column : " column
-
-		occupie=$(( "occupiedPositionCheck $row $column" ))
-
-		if [[ occupie == 0 ]]
-		then
-			filingBoard $row $column $playerSymbol
-			while [ true ]
-			do
-				computer_rows=$(( RANDOM % 3 ))
-				computer_Columns=$(( RANDOM % 3 ))
-				occupiedPositionCheck $computer_rows $computer_columns
-				if [[ occupie == 0 ]]
-				then
-					filingBoard $Rows $Columns $compSymbol
-				fi
-			done
-
-		else
-			echo "position is already occupied. try again"
-	   fi
-		printBoard
-	done
-}
-
 
