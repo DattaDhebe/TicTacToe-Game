@@ -315,10 +315,18 @@ function playGame() {
 			playerPlay
 			printBoard
 			checkWin			
-
+			if [[ $? == 1 ]]
+			then
+				break;
+			fi
+			
 			computerPlay
 			printBoard
 			checkWin
+			if [[ $? == 1 ]]
+			then 
+				break;
+			fi
 	done 
 }
 
