@@ -289,15 +289,21 @@ function checkWinOrLoss() {
 	if [[ $resultForVerticallyFilled -eq 1 || $resultForHorizontallyFilled -eq 1 || $resultForLeftDiagonal -eq 1 || $resultForRightDiagonal -eq 1 ]]
 	then
 		echo "player have Win the Game..!"
-		
+		return 1	
 	fi
 
 	if [[ $resultForVerticallyFilled -eq 2 || $resultForHorizontallyFilled -eq 2 || $resultForLeftDiagonal -eq 2 || $resultForRightDiagonal -eq 2 ]]
 	then
 		echo "computer have win the Game..!"
-		
+		return 1
 	fi
 	
+	f [ $? -eq 1 ]
+   then
+      echo "Game is draw..!"
+      return 1
+   fi
+
 	return 0
 }
 
