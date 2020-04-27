@@ -158,6 +158,85 @@ function checkVerticallyFilliedBoard() {
 	return 0
 
 }
+
+function checkLeftDiagonal() {
+	symbol=$1
+	diagonal=0
+
+	if [[ $ROWS -eq $COLUMNs ]]
+	then
+		while (( ${gameBoard[$diagonal, $diagonal]} == $symbol && $diagonal < $COLUMNS ))
+		do
+			(( diagonal++ ))
+		done
+
+		if [[ $diagonal -eq 3 ]]
+		then
+			return 1
+		fi
+		return 0
+
+	fi
+	return 0
+}
+
+function checkRightDiagonal() {
+	symbol=$1
+	row=0
+	column=$(( $COLUMNS - 1 ))
+
+	while (( $column > 0 && ${gameBoard[$row,$column]} == $symbol ))
+	do
+		(( row++ ))
+		(( column-- ))
+	done
+
+	if [[ $row -eq $ROWS ]]
+	then
+		return 1
+	fi
+	return 0
+}
+
+function leftDiagonalFilliedCheck() {
+	checkLeftDiagonal $playerSymbol
+	resultForPlayer=$?
+
+	checkRightDiagonal $compSymbol
+	resultForComputer=$?
+
+	if [[ $rsultForPlayer -eq 1 ]]
+	then
+		return 1
+	fi
+
+	if [[ $resultForComputer -eq 1 ]]
+	then
+		return 2
+	fi
+
+	return 0
+}
+
+function rightDiagonalFilliedCheck() {
+	checkRightDiagonal $playerSymbol
+	rsultForPlayer=$?
+
+	checkRightDiagonal $compSymbol
+	resultForComputer=$?
+
+	if [[ $resultForPlayer -eq 1 ]]
+	then
+		return 1
+	fi
+
+	if [[ $resultForComputer -eq 1 ]]
+	then
+		return 2
+	fi
+
+	return 0
+}
 function playerPlay() {
 	while [ true ]
 	do
