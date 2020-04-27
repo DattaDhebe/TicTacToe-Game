@@ -273,6 +273,40 @@ function computerPlay() {
 	done
 }
 
+function checkWin() {
+	checkVerticallyFilledBoard
+	resultForVericallyFillied=$?
+
+	checkHorizontallyFilledBoard
+	resultForHorizontallyFillied=$?
+
+	checkLeftDiagonal
+	resultFoLleftDiagonal=$?
+
+	checkRightDiagonal
+	resultForRightDiagonal=$?
+
+	if [[ $resultForVerticallyFilled -eq 1 || $resultForHorizontallyFilled -eq 1 || $resultForLeftDiagonal -eq 1 || $resultForRightDiagonal -eq 1 ]]
+	then
+		echo "player have Win the Game..!"
+		return 1
+	fi
+
+	if [[ $resultForVerticallyFilled -eq 2 || $resultForHorizontallyFilled -eq 2 || $resultForLeftDiagonal -eq 2 || $resultForRightDiagonal -eq 2 ]]
+	then
+		echo "computer have win the Game..!"
+		return 1
+	fi
+	
+	if [ $? -eq 1 ]
+	then
+		echo "Game is drow...Play again"
+		return 1
+	fi
+
+	return 0
+}
+
 
 function playGame() {
 
