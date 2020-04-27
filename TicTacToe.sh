@@ -314,10 +314,11 @@ function playGame() {
 	do
 			playerPlay
 			printBoard
-	
+			checkWin			
 
 			computerPlay
 			printBoard
+			checkWin
 	done 
 }
 
